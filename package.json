@@ -1,0 +1,19 @@
+{
+  "name": "SeeeeecretSanta",
+  "version": "1.0.0",
+  "description": "SecretSanting",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "body-parser": "^1.13.3",
+    "ejs": "latest",
+    "express": "3.2.6",
+    "inflection": "1.2.6",
+    "node-logging": "0.1.6",
+    "path": "0.4.9"
+  },
+  "author": "me",
+  "license": "ISC"
+}

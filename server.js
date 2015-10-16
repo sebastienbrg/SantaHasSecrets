@@ -1,10 +1,35 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
-var nodemailer = require('nodemailer');
+var jsonfile = require('jsonfile');
+
 
 var participants = ["Marceline", "Jean-Michel", "Caroline", "Olivier", "Sandrine", "Titof", "Cécile", "Seb"];
+var incompatibilies = {"Marceline": ["Jean-Michel"],
+					   "Caroline" : ["Olivier"],
+					   "Sandrine" : ["Titof"],
+					   "Cécile"  : ["Seb"],
+					   "Jean-Michel": ["Marceline"],
+					   "Olivier" : ["Caroline"],
+					   "Titof" : ["Sandrine"],
+					   "Seb"  : ["Cécile"] };
 
+
+var loadAssignments = function()
+{
+	var file = './saves/data.json'
+ 
+	jsonfile.readFile(file, function(err, readData) {
+		if(err)
+		{
+			console.log("Erreur : " + err);
+			assignments = {};
+			return;
+		}
+
+  		assignments = readData;
+	});
+}
 var assignments = {
 	"Jean-Michel" : [
 		{ 
@@ -17,23 +42,88 @@ var assignments = {
 		}
 		]
 		};
+loadAssignments();
 
+
+var saveAssignments = function()
+{
+	console.log("saving");
+
+	var file = './saves/data.json'
+ 
+	jsonfile.writeFile(file, assignments, function (err) {
+		if(err)
+  			console.error(err)
+  		else
+  			console.log("Saved the assignments!");
+	});
+}
+
+var getUsedUsersForRound = function(round, petitCadeau) 
+{
+	var used = [];
+	for(var i =0; i < participants.length; ++i)
+	{
+		var parti = participants[i];
+		if(assignments[parti] != undefined && assignments[parti].length > round)
+		{
+			if(petitCadeau)
+				used.push(assignments[parti][round].petitCadeau)
+			else
+				used.push(assignments[parti][round].grosCadeau)
+		}
+	}	
+	return used;
+}
+
+var getCompatibilityList = function(user, round, petitCadeau)
+{
+
+	var alreadyUsed = getUsedUsersForRound(round, petitCadeau);
+
+	console.log("Fetching compatibilityList for " + user + " On round " + round);
+	var compatibilityList = [];
+	for(var i =0; i < participants.length; ++i)
+	{
+		var parti = participants[i];
+		console.log("Participant " + parti + "examine");
+		if(user != parti)
+		{
+			//root incompatibility
+			if(incompatibilies[user].indexOf(parti) == -1)
+			{
+				if(alreadyUsed.indexOf(parti) == -1)
+					compatibilityList.push(parti);
+			}
+		}
+	}
+	return compatibilityList;
+}
 
 var getAssignment = function(user)
 {
 	if(assignments[user] == undefined)
 		assignments[user] = [];
 
-	var index1 = (Math.random() *100) % participants.length;
-	var index2 = Math.floor((Math.random() *100) % participants.length);
-	console.log("Index 1 : " + index1 + " Index 2 : " + index2);
+	var round = assignments[user].length;
+	var compatibilityList = getCompatibilityList(user, round);
 
-	var assign = { 
-			petitCadeau : participants[Math.floor((Math.random() *100) % participants.length)],
-			grosCadeau : participants[Math.floor((Math.random() *100) % participants.length)]
-		};
+	var assign = {};
+	if(compatibilityList.length < 2)
+	{
+		assign.petitCadeau = "IMPOSSIBLE";
+		assign.grosCadeau = "IMPOSSIBLE";
+	}
+	else
+	{
+		assign.petitCadeau = compatibilityList[Math.floor(Math.random() *100) % compatibilityList.length];
+		compatibilityList.slice(compatibilityList.indexOf(assign.petitCadeau), 1);
+		assign.grosCadeau = compatibilityList[Math.floor(Math.random() *100) % compatibilityList.length];
+	}
+
 	console.log(assign);
 	assignments[user][assignments[user].length] = assign;
+	saveAssignments();
 }
 
 app.use(bodyParser.urlencoded({

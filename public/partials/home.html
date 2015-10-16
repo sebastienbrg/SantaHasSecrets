@@ -5,7 +5,8 @@
             <button ng-repeat ='participant in participants' type="button" class="btn btn-default" ng-click= "setParticipant( participant ); ">{{ participant }}</button>
         </div>
     </div>
-  <div ng-show="participant != undefined">
+  <div type="button" class="btn btn-default" ng-show="participant != undefined">
+    <div><button ng-click= "participant = undefined">Retour</button></div>
   <div ng-repeat="assignment in assignments" class="jumbotron" >
     <h1>Round {{ $index + 1 }}:</h1>
     <p>Tu feras :

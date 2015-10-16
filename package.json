@@ -11,9 +11,9 @@
     "ejs": "latest",
     "express": "3.2.6",
     "inflection": "1.2.6",
+    "jsonfile": "^2.2.3",
     "node-logging": "0.1.6",
-    "path": "0.4.9",
-    "nodemailer" : "latest"
+    "path": "0.4.9"
   },
   "author": "me",
   "license": "ISC"

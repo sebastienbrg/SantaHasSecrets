@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
+var nodemailer = require('nodemailer');
 
 var participants = ["Marceline", "Jean-Michel", "Caroline", "Olivier", "Sandrine", "Titof", "Cécile", "Seb"];
 
@@ -20,12 +21,19 @@ var assignments = {
 
 var getAssignment = function(user)
 {
-	var assign = { 
-			petitCadeau : participants[6],
-			grosCadeau : participants[4],
-		};
+	if(assignments[user] == undefined)
+		assignments[user] = [];
 
-	return assign;
+	var index1 = (Math.random() *100) % participants.length;
+	var index2 = Math.floor((Math.random() *100) % participants.length);
+	console.log("Index 1 : " + index1 + " Index 2 : " + index2);
+
+	var assign = { 
+			petitCadeau : participants[Math.floor((Math.random() *100) % participants.length)],
+			grosCadeau : participants[Math.floor((Math.random() *100) % participants.length)]
+		};
+	console.log(assign);
+	assignments[user][assignments[user].length] = assign;
 }
 
 app.use(bodyParser.urlencoded({
@@ -49,10 +57,8 @@ app.get('/api/assignment/:user', function(req, res)
 	{
 		console.log("Adding one assignment");
 		console.log("user : " + req.params.user);
-		var assign = getAssignment(req.params.user);
-		if(assignments[req.params.user] == undefined)
-			assignments[req.params.user] = [];
-		assignments[req.params.user][assignments[req.params.user].length] = assign;
+		getAssignment(req.params.user);
+		
 		res.json(assignments[req.params.user]);		
 	}
 	else

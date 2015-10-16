@@ -5,11 +5,15 @@
             <button ng-repeat ='participant in participants' type="button" class="btn btn-default" ng-click= "setParticipant( participant ); ">{{ participant }}</button>
         </div>
     </div>
-<div ng-repeat="assignment in assignments" class="jumbotron" ng-show="participant != undefined">
-  <h1>Round {{ $index + 1 }}:</h1>
-  <p>Tu feras :
-    <div class="list-group">
-     <p class="list-group-item">Un petit cadeau à <b>{{assignment.petitCadeau}}</b> </p>
-     <p class="list-group-item">Un gros cadeau à <b>{{assignment.grosCadeau}}</b> </p>
-    </div>
+  <div ng-show="participant != undefined">
+  <div ng-repeat="assignment in assignments" class="jumbotron" >
+    <h1>Round {{ $index + 1 }}:</h1>
+    <p>Tu feras :
+      <div class="list-group">
+       <p class="list-group-item">Un petit cadeau à <b>{{assignment.petitCadeau}}</b> </p>
+       <p class="list-group-item">Un gros cadeau à <b>{{assignment.grosCadeau}}</b> </p>
+      </div>
+  </div>
+  <button  type="button" class="btn btn-default" ng-click= "addANewAssignment(); "> Tirer des noms pour un autre tour ! </button>
 </div>
+

@@ -24,4 +24,16 @@ scotchApp.controller('santaController',['$scope', '$http',  function($scope, $ht
         });
     }; 
 
+
+    $scope.addANewAssignment = function()
+    {
+        if($scope.participant == undefined)
+            return;
+        $http.get("/api/assignment/" + $scope.participant).success(function(response)
+        {
+            $scope.assignments = response;
+            console.log(response);
+        });
+    }
+
 }]);

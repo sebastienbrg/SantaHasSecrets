@@ -1,41 +1,30 @@
 // create the module and name it scotchApp
-        // also include ngRoute for all our routing needs
-    var scotchApp = angular.module('scotchApp', ['ngRoute', 'ngResource', 'ui.bootstrap.datetimepicker']);
+        // also include ngRoute for all our routing needs    
 
+    var scotchApp = angular.module('scotchApp', ['ngRoute', 'ngResource', 'ui.bootstrap.datetimepicker']);
+    scotchApp.factory('Data', function(){
+        return { appToken : ""};
+    });
     // configure our routes
     scotchApp.config(function($routeProvider) {
         $routeProvider
 
             // route for the home page
-            .when('/home', {
-                templateUrl : 'partials/home.html',
+            .when('/santa', {
+                templateUrl : 'partials/santa.html',
                 controller  : 'santaController'
             })
 
             // route for the about page
-            .when('/about', {
-                templateUrl : 'partials/about.html',
-                controller  : 'santaController'
-            })
-
-            // route for the contact page
-            .when('/contact', {
-                templateUrl : 'partials/contact.html',
-                controller  : 'contactController'
+            .when('/login', {
+                templateUrl : 'partials/login.html',
+                controller  : 'loginController'
             })
             .otherwise(
             {
-              templateUrl : 'partials/home.html',
-                controller  : 'santaController'  
+              templateUrl : 'partials/login.html',
+                controller  : 'loginController'  
             });
     });    
-
-    scotchApp.controller('aboutController', function($scope) {
-        $scope.message = 'Look! I am an about page.';
-    });
-
-    scotchApp.controller('contactController', function($scope) {
-        $scope.message = 'Contact us! JK. This is just a demo.';
-    });
 
     //$('.datepicker').pickadate();

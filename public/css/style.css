@@ -2,3 +2,38 @@
 {
 	width: 50%;	
 }
+
+.btnNom 
+{
+	width: 100%;	
+}
+
+#main
+{
+    margin-left: 10%;
+    margin-top: 5%;
+    width: 80%;
+}
+td
+{
+	margin: 3px;
+}
+.list-group, .affichNbr
+{
+	padding: 5px;
+}
+.IMPOSSIBLE
+{
+	background-color: red;
+}
+
+
+.FINAL
+{
+	background-color: green;
+}
+
+.EXTRA
+{
+	visibility: hidden;
+}

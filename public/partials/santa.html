@@ -1,0 +1,23 @@
+
+<div>
+  <button type="button" class="btn btn-default btnNom" ng-click="disconnect()" >Déconnexion</button>
+  <table>
+    <tr ng-repeat="userAssignment in globalAssignments">
+      <td>
+        <button type="button" class="btn btn-default btnNom" >{{ userAssignment.name }}</button>
+      </td>
+      <td ng-show="userAssignment.name != participant" class="affichNbr">  {{ userAssignment.assignments.length }} tour{{userAssignment.assignments.length>1?"s":""}} déjà tirés.</td>
+
+      <td ng-repeat="round in userAssignment.assignments"  ng-show="userAssignment.name == participant">
+        <div class="list-group {{round.state}}">
+          <p class="list-group-item">Un petit cadeau à <b>{{round.petitCadeau}}</b> </p>
+          <p class="list-group-item">Un gros cadeau à <b>{{round.grosCadeau}}</b> </p>
+        </div>
+      </td>
+
+      <td>
+        <button  type="button" class="btn btn-default" ng-show="userAssignment.name == participant" ng-click= "addANewAssignment(appToken); "> Tirer des noms pour un autre tour ! </button>
+      </td>
+    </tr>
+  </table>
+</div>

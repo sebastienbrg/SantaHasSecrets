@@ -1,39 +1,57 @@
 
 // create the controller and inject Angular's $scope
-scotchApp.controller('santaController',['$scope', '$http',  function($scope, $http) {
+scotchApp.controller('santaController',['$scope', '$http', 'Data', '$location', function($scope, $http, Data, $location) {
     
     var participants = [];
-    var participant = undefined;
-    var assignments = {};
+    $scope.participant = Data.user;
+    var globalAssignments = {};
+    $scope.appToken = Data.appToken;
+
+    if(Data.appToken == "")
+    {
+        $location.path("/login");
+    }
+
+    console.log(" Token : " + Data.appToken + ", User : " + Data.user);
 
     $http.get("/api/participants").success(function (response)
     {
         $scope.participants= response;
         console.log(response);
     });
-  $scope.setParticipant = function(participantName)
-    {
-        $scope.participant = participantName;
-        console.log("participant is " + $scope.participant);
-        //window.location.replace("#about");
 
-        $http.get("/api/assignments/" + $scope.participant).success(function(response)
+    $scope.loadAssignments = function(participantName)
+    {
+        console.log("participant is " + $scope.participant);
+
+        $http.get("/api/assignments/" + $scope.appToken).success(function(response)
         {
-            $scope.assignments = response;
+            
+            $scope.globalAssignments = response;
             console.log(response);
         });
     }; 
 
 
-    $scope.addANewAssignment = function()
+    $scope.addANewAssignment = function(token)
     {
         if($scope.participant == undefined)
             return;
-        $http.get("/api/assignment/" + $scope.participant).success(function(response)
+        $http.get("/api/assignment/" + $scope.appToken).success(function(response)
         {
-            $scope.assignments = response;
+            $scope.globalAssignments = response;
             console.log(response);
         });
+    };
+
+
+    $scope.disconnect = function()
+    {
+        $scope.appToken = "";
+        $scope.participant = "";
+        $location.path("/login");
     }
+
+    $scope.loadAssignments();
 
 }]);

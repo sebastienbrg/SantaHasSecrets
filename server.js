@@ -54,6 +54,7 @@ loadPasswords();
 
 var loadAssignments = function()
 {
+	console.log("loadAssignments");
 	var file = './saves/data.json'
  
 	jsonfile.readFile(file, function(err, readData) {
@@ -79,8 +80,8 @@ var loadAssignments = function()
 				assignments[parti] = assigns;
   			}
   		});
+		setAssignmentsStatus();
 	});
-	setAssignmentsStatus();
 };
 var assignments = {};
 
@@ -96,6 +97,7 @@ var setAssignmentsStatus = function()
 		else if(maxRound > assignments[parti].length || maxRound == -1)
 			maxRound = assignments[parti].length;
 	});
+	console.log("setAssignmentsStatus " + maxRound);
 
 	var finalRound = -1;
 	//for all ended rounds, see if impossible or final
@@ -109,7 +111,7 @@ var setAssignmentsStatus = function()
 				seenImpossible = true;
 		});
 		//If impossible, set impossible
-		if(seenImpossible)
+		if(seenImpossible )
 		{
 			participants.forEach(function(parti)
 			{
@@ -121,6 +123,7 @@ var setAssignmentsStatus = function()
 			participants.forEach(function(parti)
 			{
 				assignments[parti][round].state = "FINAL";
+				console.log("found a final round " + round);
 				finalRound = round;
 			});
 			break;
@@ -134,7 +137,10 @@ var setAssignmentsStatus = function()
 			for(var round = finalRound + 1; round < assignments[parti].length; ++round)
 			{
 				assignments[parti][round].state = "EXTRA";
+
 			}
+			console.log("splicing tab");
+			assignments[parti] = assignments[parti].splice(0,finalRound+1);
 		});
 	}
 };

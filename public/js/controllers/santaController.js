@@ -7,7 +7,16 @@ scotchApp.controller('santaController',['$scope', '$http', 'Data', '$location', 
         assignments.some(function(userAss)
             { 
                 if(userAss.name == $scope.participant){
-                     $scope.userAssignements = userAss;
+                    $scope.userAssignements = userAss;
+                    if(userAss.assignments.length > 0)
+                    {
+                        console.log(userAss);
+                        $scope.isDone = (userAss.assignments[userAss.assignments.length -1].state =="FINAL");
+                    }
+                    else{
+                        $scope.isDone = false;
+                    }
+                    console.log("$scope.isDone " + $scope.isDone);
                      return true;
                 }
                 return false;

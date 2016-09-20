@@ -19,16 +19,14 @@
         </td>
         </tbody>
       </table>
-      <button  type="button" class="btn btn-default" ng-click= "addANewAssignment(appToken); "> Tirer des noms pour un autre tour ! </button>
+      <button  type="button" class="btn btn-default" ng-click= "addANewAssignment(appToken); "> 
+        <span class="glyphicon glyphicon-plus"></span> Tirer des noms pour un autre tour ! </button>
   <button type="button" class="btn btn-default btnNom" ng-click="disconnect()" >Déconnexion</button>
     <div ng-repeat="userAssignment in globalAssignments">
     <div ng-show="userAssignment.name != participant" class="affichNbr">  
       <h1>{{ userAssignment.name }}</h1>
       {{ userAssignment.assignments.length }} tour{{userAssignment.assignments.length>1?"s":""}} déjà tirés.
       </div>
-    
-    
-    
     </div>
   </div>
 </div>

@@ -277,6 +277,7 @@ var getAssignment = function(user)
 	}
 
 	//console.log(assign);
+	assign.num = (assignments[user].length +1);
 	assignments[user][assignments[user].length] = assign;
 	saveAssignments();
 	setAssignmentsStatus();

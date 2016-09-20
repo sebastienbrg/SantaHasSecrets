@@ -2,6 +2,19 @@
 // create the controller and inject Angular's $scope
 scotchApp.controller('santaController',['$scope', '$http', 'Data', '$location', function($scope, $http, Data, $location) {
     
+    $scope.setGlobalAssignments = function(assignments){
+        $scope.globalAssignments = assignments;
+        assignments.some(function(userAss)
+            { 
+                if(userAss.name == $scope.participant){
+                     $scope.userAssignements = userAss;
+                     return true;
+                }
+                return false;
+            });
+        
+        console.log(assignments);
+    };
     var participants = [];
     $scope.participant = Data.user;
     var globalAssignments = {};
@@ -26,20 +39,8 @@ scotchApp.controller('santaController',['$scope', '$http', 'Data', '$location', 
 
         $http.get("/api/assignments/" + $scope.appToken).success(function(response)
         {
+            $scope.setGlobalAssignments(response);
             
-            $scope.globalAssignments = response;
-            response.some(function(userAss)
-                { 
-                    if(userAss.name == $scope.participant){
-                         $scope.userAssignements = userAss;
-                         return true;
-                    }
-                    return false;
-                });
-            
-            console.log(response);
-            console.log("User ass = ");
-            console.log($scope.userAssignements);
         });
     }; 
 
@@ -50,8 +51,7 @@ scotchApp.controller('santaController',['$scope', '$http', 'Data', '$location', 
             return;
         $http.get("/api/assignment/" + $scope.appToken).success(function(response)
         {
-            $scope.globalAssignments = response;
-            console.log(response);
+            $scope.setGlobalAssignments(response);
         });
     };
 

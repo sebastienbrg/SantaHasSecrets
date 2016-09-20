@@ -1,6 +1,10 @@
+button{
+	margin-top: 10px;
+}
 .tableEventList
 {
-	width: 50%;	
+	padding: 20px;
+	border: outset 1px lightgreen;
 }
 
 .btnNom 
@@ -9,10 +13,9 @@
 }
 
 #main
-{
-    margin-left: 10%;
+{    
+    padding: 0;
     margin-top: 5%;
-    width: 80%;
 }
 td
 {

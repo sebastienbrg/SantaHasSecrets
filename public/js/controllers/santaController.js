@@ -28,7 +28,18 @@ scotchApp.controller('santaController',['$scope', '$http', 'Data', '$location', 
         {
             
             $scope.globalAssignments = response;
+            response.some(function(userAss)
+                { 
+                    if(userAss.name == $scope.participant){
+                         $scope.userAssignements = userAss;
+                         return true;
+                    }
+                    return false;
+                });
+            
             console.log(response);
+            console.log("User ass = ");
+            console.log($scope.userAssignements);
         });
     }; 
 

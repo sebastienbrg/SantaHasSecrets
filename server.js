@@ -23,6 +23,7 @@ function decrypt(text){
 }
 
 var participants = ["Marceline", "Jean-Michel", "Caroline", "Olivier", "Sandrine", "Titof", "Cécile", "Seb"];
+participants.sort();
 var incompatibilies = {"Marceline": ["Jean-Michel"],
 					   "Caroline" : ["Olivier"],
 					   "Sandrine" : ["Titof"],
@@ -72,7 +73,7 @@ var loadAssignments = function()
 				var assigns = [];
 				for(var i = 0;i < readData[parti].length; ++i)
 				{
-					assigns.push({ petitCadeau : decrypt(readData[parti][i].petitCadeau),
+					assigns.push({ num: (i+1), petitCadeau : decrypt(readData[parti][i].petitCadeau),
 									grosCadeau : decrypt(readData[parti][i].grosCadeau)});
 				}
 				assignments[parti] = assigns;

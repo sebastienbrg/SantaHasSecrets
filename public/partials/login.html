@@ -1,8 +1,8 @@
-<div class="jumbotron text-center tableEventList" >
+<div class="text-center tableEventList" >    
 	<div ng-show="participant == undefined">
 	    <h1>Qui est tu ?</h1>
 	    <div class="btn-group-vertical" role="group">
-	        <button ng-repeat ='participant in participants' type="button" class="btn btn-default" ng-click= "selectedParticipant( participant ); ">{{ participant }}</button>
+	        <button ng-repeat ='participant in participants' type="button" class="btn btn-primary" ng-click= "selectedParticipant( participant ); ">{{ participant }}</button>
 	    </div>
 	</div>	
 
@@ -10,12 +10,12 @@
     	<p> Bonjour {{ participant }}, tu dois créer un mot de passe : </p>
     	<input type = "password" placeholder ="mot de passe" ng-model="typedPwd"></input><br>
     	<input type = "password" placeholder ="Re - mot de passe" ng-model="reTypedPwd"></input><br>
-    	<button type="button" ng-click="createPassword()">Créer</button>
+    	<button type="button" ng-click="createPassword()" class="btn btn-primary">Créer</button>
     </div>
     <div ng-show="participant != undefined && requestPwd != true ">
     	<p> Bonjour {{ participant }}, tu dois taper ton mot de passe : </p>
     	<input type = "password" placeholder ="mot de passe" ng-model="typedPwd"></input><br>
-    	<button type="button" ng-click="login()">Se connecter</button>
+    	<button type="button" ng-click="login()" class="btn btn-primary">Se connecter</button>
     </div>
     <div class = "alert alert-danger" ng-show="errorMsg.length > 0" >
     	{{ errorMsg }}

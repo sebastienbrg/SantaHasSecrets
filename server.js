@@ -363,9 +363,8 @@ app.get("/api/login/:user/:pwd", function(req, res)
 	res.json(answer);
 });
 
-var server = app.listen(80, function () {
-  var host = server.address().address;
-  var port = server.address().port;
-
-  console.log('Example app listening at http://%s:%s', host, port);
+app.listen(process.env.PORT || 80, function(){
+  console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
 });
+
+  

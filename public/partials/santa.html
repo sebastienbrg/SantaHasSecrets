@@ -19,7 +19,7 @@
         </td>
         </tbody>
       </table>
-      <button  type="button" class="btn btn-default" ng-click= "addANewAssignment(appToken); "> 
+      <button  ng-show="!isDone" type="button" class="btn btn-default" ng-click= "addANewAssignment(appToken); "> 
         <span class="glyphicon glyphicon-plus"></span> Tirer des noms pour un autre tour ! </button>
   <button type="button" class="btn btn-default btnNom" ng-click="disconnect()" >Déconnexion</button>
     <div ng-repeat="userAssignment in globalAssignments">

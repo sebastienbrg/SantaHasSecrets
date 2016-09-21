@@ -351,7 +351,7 @@ app.get("/api/login/:user/:pwd", function(req, res)
 		if(passWords[req.params.user] == md5(req.params.pwd))
 		{
 			answer.ok = 1;
-			answer.appToken = "Ok_" + req.params.user;
+			answer.appToken = "" + md5(req.params.user) + "_" + Date.now();
 			tokens[answer.appToken] = req.params.user;
 			console.log("password authentication ok for " + req.params.user);
 		}

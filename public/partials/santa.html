@@ -1,7 +1,14 @@
 
 <div>
-
-    <h1>{{participant}}</h1>
+    <ul class="nav navbar-nav">
+    <li class="nav-item" id="myAssNav" >
+      <a class="nav-link" ng-click="showMyAssignments()" href="">{{ participant }} </a>
+    </li>
+    <li class="nav-item" id="AssListNav" >
+      <a class="nav-link" ng-click="showOthersAssignments()" href="">Les autres</a>
+    </li>
+  </ul>
+    <div id="myAssignments">
     <table class="table">
         <thead>
         <tr>
@@ -21,12 +28,15 @@
       </table>
       <button  ng-show="!isDone" type="button" class="btn btn-default" ng-click= "addANewAssignment(appToken); "> 
         <span class="glyphicon glyphicon-plus"></span> Tirer des noms pour un autre tour ! </button>
-  <button type="button" class="btn btn-default btnNom" ng-click="disconnect()" >Déconnexion</button>
+    <button type="button" class="btn btn-default btnNom" ng-click="disconnect()" >Déconnexion</button>
+  </div>
+  <div id="otherAssignments">
     <div ng-repeat="userAssignment in globalAssignments">
     <div ng-show="userAssignment.name != participant" class="affichNbr">  
       <h1>{{ userAssignment.name }}</h1>
       {{ userAssignment.assignments.length }} tour{{userAssignment.assignments.length>1?"s":""}} déjà tirés.
       </div>
+    </div>
     </div>
   </div>
 </div>

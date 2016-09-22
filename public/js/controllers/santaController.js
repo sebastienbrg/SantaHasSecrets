@@ -71,7 +71,20 @@ scotchApp.controller('santaController',['$scope', '$http', 'Data', '$location', 
         $scope.participant = "";
         $location.path("/login");
     }
+    $scope.showMyAssignments = function(){
+        $("#myAssNav").addClass("active");
+        $("#AssListNav").removeClass("active");
+        $("#myAssignments").show();
+        $("#otherAssignments").hide();
+    };
+    $scope.showOthersAssignments = function(){
+        $("#myAssNav").addClass("active");
+        $("#AssListNav").removeClass("active");
+        $("#myAssignments").hide();
+        $("#otherAssignments").show();
+    };
 
     $scope.loadAssignments();
+     $scope.showMyAssignments();
 
 }]);

@@ -22,16 +22,26 @@ function decrypt(text){
   return dec;
 }
 
-var participants = ["Marceline", "Jean-Michel", "Caroline", "Olivier", "Sandrine", "Titof", "Cécile", "Seb"];
-participants.sort();
-var incompatibilies = {"Marceline": ["Jean-Michel"],
-					   "Caroline" : ["Olivier"],
-					   "Sandrine" : ["Titof"],
-					   "Cécile"  : ["Seb"],
-					   "Jean-Michel": ["Marceline"],
-					   "Olivier" : ["Caroline"],
-					   "Titof" : ["Sandrine"],
-					   "Seb"  : ["Cécile"] };
+var participants = [];
+var incompatibilies = {};
+
+function loadParticipants(){
+	var file = './saves/participants.json'
+ 
+	jsonfile.readFile(file, function(err, readData) {
+		if(err)
+		{
+			console.log("Erreur : " + err);
+			participants = [];
+			incompatibilies= {};
+			return;
+		}
+  		participants = readData.participants;
+  		incompatibilies = readData.incompatibilies;
+		participants.sort();
+	});
+}
+loadParticipants();
 
 var tokens = [];
 var passWords = {};

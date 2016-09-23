@@ -1,0 +1,14 @@
+{
+	"participants" : ["Marceline", "Jean-Michel", "Caroline", "Olivier", "Sandrine", "Titof", "Cécile", "Seb"],
+	"incompatibilies":	
+	{
+		"Marceline": ["Jean-Michel"],
+		"Caroline" : ["Olivier"],
+		"Sandrine" : ["Titof"],
+		"Cécile"  : ["Seb"],
+		"Jean-Michel": ["Marceline"],
+		"Olivier" : ["Caroline"],
+		"Titof" : ["Sandrine"],
+		"Seb"  : ["Cécile"] 
+	}
+}

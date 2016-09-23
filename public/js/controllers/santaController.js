@@ -78,8 +78,8 @@ scotchApp.controller('santaController',['$scope', '$http', 'Data', '$location', 
         $("#otherAssignments").hide();
     };
     $scope.showOthersAssignments = function(){
-        $("#myAssNav").addClass("active");
-        $("#AssListNav").removeClass("active");
+        $("#myAssNav").removeClass("active");
+        $("#AssListNav").addClass("active");
         $("#myAssignments").hide();
         $("#otherAssignments").show();
     };

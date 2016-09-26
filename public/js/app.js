@@ -23,8 +23,8 @@
             })
             .otherwise(
             {
-                templateUrl : 'partials/santa.html',
-                controller  : 'santaController'
+              templateUrl : 'partials/login.html',
+                controller  : 'loginController'  
             });
     });    
 

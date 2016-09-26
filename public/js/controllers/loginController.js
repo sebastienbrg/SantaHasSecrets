@@ -4,7 +4,11 @@ scotchApp.controller('loginController',['$scope', '$http', 'Data', '$location', 
 	var participants = [];
     var participant = undefined;
     var requestPwd = false;
-    $scope.appToken = Data.appToken;
+    
+    if(Data.appToken != ""){
+    	console.log("AppToken is set to " + Data.appToken)
+        $location.path("/santa");
+    }
     console.log("appToken : " + Data.appToken)
     var typedPwd = "";
     var reTypedPwd = "";

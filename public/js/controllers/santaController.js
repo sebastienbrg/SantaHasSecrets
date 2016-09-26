@@ -6,8 +6,6 @@ scotchApp.controller('santaController',['$scope', '$http', 'Data', '$location', 
     //Loading user info
     function getUserFromToken(){
         console.log("getUserFromToken()");
-        $scope.appToken = Data.appToken;
-
         if(Data.appToken != "")
         {
             $http.get("/api/currentUser/"+Data.appToken).success(function (response)
@@ -15,6 +13,8 @@ scotchApp.controller('santaController',['$scope', '$http', 'Data', '$location', 
                 $scope.participant = response;
                 console.log("User from token : " + response);
                 if($scope.participant == ""){
+                    Data.appToken = "";
+                    localStorage.setItem("AppToken", "");
                     $location.path("/login");
                 }
                 else{
@@ -67,7 +67,7 @@ scotchApp.controller('santaController',['$scope', '$http', 'Data', '$location', 
     {
         console.log("participant is " + $scope.participant);
 
-        $http.get("/api/assignments/" + $scope.appToken).success(function(response)
+        $http.get("/api/assignments/" + Data.appToken).success(function(response)
         {
             $scope.setGlobalAssignments(response);            
         });
@@ -78,7 +78,7 @@ scotchApp.controller('santaController',['$scope', '$http', 'Data', '$location', 
     {
         if($scope.participant == undefined)
             return;
-        $http.get("/api/assignment/" + $scope.appToken).success(function(response)
+        $http.get("/api/assignment/" + Data.appToken).success(function(response)
         {
             $scope.setGlobalAssignments(response);
         });
@@ -87,7 +87,7 @@ scotchApp.controller('santaController',['$scope', '$http', 'Data', '$location', 
 
     $scope.disconnect = function()
     {
-        $scope.appToken = "";
+        Data.appToken = "";
         localStorage.setItem("AppToken", "")
         $scope.participant = "";
         $location.path("/login");

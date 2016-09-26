@@ -3,7 +3,8 @@
 
     var scotchApp = angular.module('scotchApp', ['ngRoute', 'ngResource']);
     scotchApp.factory('Data', function(){
-        return { appToken : ""};
+
+        return { appToken : localStorage.getItem("AppToken")};
     });
     // configure our routes
     scotchApp.config(function($routeProvider) {
@@ -22,8 +23,8 @@
             })
             .otherwise(
             {
-              templateUrl : 'partials/login.html',
-                controller  : 'loginController'  
+                templateUrl : 'partials/santa.html',
+                controller  : 'santaController'
             });
     });    
 

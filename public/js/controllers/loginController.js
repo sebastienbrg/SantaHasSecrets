@@ -5,6 +5,7 @@ scotchApp.controller('loginController',['$scope', '$http', 'Data', '$location', 
     var participant = undefined;
     var requestPwd = false;
     $scope.appToken = Data.appToken;
+    console.log("appToken : " + Data.appToken)
     var typedPwd = "";
     var reTypedPwd = "";
     var errorMsg = "";
@@ -57,7 +58,7 @@ scotchApp.controller('loginController',['$scope', '$http', 'Data', '$location', 
 			{
 				$scope.errorMsg = "";
 				Data.appToken = response.appToken;
-				Data.user = $scope.participant;
+				localStorage.setItem("AppToken",response.appToken);
 				$location.path("/santa");
 			}
 	        console.log("Received "  + response.appToken);

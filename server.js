@@ -313,6 +313,11 @@ app.get('/api/participants', function(req, res)
 	res.json(participants);	
 });
 
+app.get('/api/currentUser/:token', function(req, res)
+{
+	var user = tokens[req.params.token];
+	res.json(user);	
+});
 
 app.get('/api/assignment/:token', function(req, res)
 {	

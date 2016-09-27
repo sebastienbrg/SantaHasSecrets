@@ -39,8 +39,8 @@
   <div id="otherAssignments">
     <div ng-repeat="userAssignment in globalAssignments">
     <div ng-show="userAssignment.name != participant" class="affichNbr">  
-      <h1>{{ userAssignment.name }}</h1>
-      {{ userAssignment.assignments.length }} tour{{userAssignment.assignments.length>1?"s":""}} déjà tirés.
+      <h3>{{ userAssignment.name }}</h3>
+     <p>{{ userAssignment.assignments.length }} tour{{userAssignment.assignments.length>1?"s":""}} déjà tirés.</p>
       </div>
     </div>
     </div>

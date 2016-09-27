@@ -1,14 +1,30 @@
-@media (max-width: 623px) {
-    html {
-		html{
-			font-size:3vw;
-		}
-		.btn{
-			font-size:3vw;
-		}
-		.table {
-			font-size:3vw;
-		}
+
+body{
+}
+@media (max-width: 600px) {
+	body{
+		font-size: 200%;
+	}
+}
+
+p{
+	font-size: 100%;
+}
+.btn{
+	font-size: 125%;
+}
+th{
+	font-size: 125%;	
+}
+td{
+	font-size: 100%;
+}
+a{
+	font-size: 125%;	
+}
+
+#headerImg{
+	width: 100%;
 }
 
 button{
@@ -36,7 +52,7 @@ td
 }
 .list-group, .affichNbr
 {
-	padding: 5px;
+	
 }
 .IMPOSSIBLE
 {

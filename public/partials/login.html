@@ -8,6 +8,9 @@
 
     <div ng-show="participant != undefined && requestPwd == true ">
     	<p> Bonjour {{ participant }}, tu dois créer un mot de passe : </p>
+        <p>Clé d'activation</p>
+        <input type = "password" placeholder ="activation" ng-model="activationKey"></input><br>
+        <p>Mot de passe:</p>
     	<input type = "password" placeholder ="mot de passe" ng-model="typedPwd"></input><br>
     	<input type = "password" placeholder ="Re - mot de passe" ng-model="reTypedPwd"></input><br>
     	<button type="button" ng-click="createPassword()" class="btn btn-primary responsive">Créer</button>

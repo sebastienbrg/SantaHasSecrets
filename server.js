@@ -24,6 +24,7 @@ function decrypt(text){
 
 var participants = [];
 var incompatibilies = {};
+var activationKeys = {};
 
 function loadParticipants(){
 	var file = './saves/participants.json'
@@ -38,6 +39,7 @@ function loadParticipants(){
 		}
   		participants = readData.participants;
   		incompatibilies = readData.incompatibilies;
+  		activationKeys = readData.activationCodes;
 		participants.sort();
 	});
 }
@@ -94,6 +96,7 @@ var loadAssignments = function()
 	});
 };
 var assignments = {};
+
 
 var setAssignmentsStatus = function()
 {
@@ -347,19 +350,24 @@ app.get('/api/participantHasPw/:user', function(req, res)
 	res.json((passWords[req.params.user] != undefined) ? 1 : 0);
 });
 
-app.post("/api/createPassword/:user/:pwd", function(req, res)
+app.post("/api/createPassword/:user/:pwd/:activationKey", function(req, res)
 {
 
-	passWords[req.params.user] = md5(req.params.pwd);
-	var file = './saves/pswd.json'
- 
-	jsonfile.writeFile(file, passWords, function (err) {
-		if(err)
-  			console.error(err)
-  		else
-  			console.log("Saved the pwd!");
-	});
-	res.send("OK");
+	if(activationKeys[req.params.user] === req.params.activationKey){
+		passWords[req.params.user] = md5(req.params.pwd);
+		var file = './saves/pswd.json'
+	 
+		jsonfile.writeFile(file, passWords, function (err) {
+			if(err)
+	  			console.error(err)
+	  		else
+	  			console.log("Saved the pwd!");
+		});
+		res.send("OK");
+	}
+	else{
+		res.send("BadKey");
+	}
 });
 
 app.get("/api/login/:user/:pwd", function(req, res)

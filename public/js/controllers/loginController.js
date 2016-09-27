@@ -12,6 +12,7 @@ scotchApp.controller('loginController',['$scope', '$http', 'Data', '$location', 
     console.log("appToken : " + Data.appToken)
     var typedPwd = "";
     var reTypedPwd = "";
+    var activationKey = "";
     var errorMsg = "";
 
     $http.get("/api/participants").success(function (response)
@@ -40,10 +41,16 @@ scotchApp.controller('loginController',['$scope', '$http', 'Data', '$location', 
 		{
 			$scope.errorMsg = "";
 
-			$http.post("/api/createPassword/" + $scope.participant + "/" + $scope.typedPwd).success(function (response)
+			$http.post("/api/createPassword/" + $scope.participant + "/" + $scope.typedPwd + "/" + $scope.activationKey).success(function (response)
 		    {
-		        $scope.requestPwd = false;
-		        console.log("Ok, passwd cretaed");
+		    	if(response == "OK"){
+		    		$scope.requestPwd = false;
+		        	console.log("Ok, passwd cretaed");	
+		    	}
+		    	else if(response === "BadKey"){
+	    			$scope.errorMsg = "Erreur dans la clé d'activation.";
+		    	}
+		        
 		    });
 		}
     };

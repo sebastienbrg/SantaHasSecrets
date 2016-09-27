@@ -10,5 +10,15 @@
 		"Olivier" : ["Caroline"],
 		"Titof" : ["Sandrine"],
 		"Seb"  : ["Cécile"] 
+	},
+	"activationCodes":{
+		"Marceline": "M4rC€L1ne",
+		"Jean-Michel": "JM1chL",
+		"Caroline" :"C4rol1n€",
+		"Olivier" :"O.l1v",
+		"Sandrine":"s4nDr1nE",
+		"Titof":"Le petit Titof attend ses parents à l'accueil, merci.",
+		"Cécile":"c€6L",
+		"Seb":"S€bastien"
 	}
 }

@@ -23,8 +23,8 @@
             })
             .otherwise(
             {
-              templateUrl : 'partials/login.html',
-                controller  : 'loginController'  
+              templateUrl : 'partials/welcome.html',
+                controller  : 'welcomeController'  
             });
     });    
 

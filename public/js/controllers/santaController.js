@@ -3,42 +3,26 @@
 scotchApp.controller('santaController',['$scope', '$http', 'Data', '$location', function($scope, $http, Data, $location) {
     var participants = [];
     var globalAssignments = {};
-    //Loading user info
-    function getUserFromToken(){
-        console.log("getUserFromToken()");
-        if(Data.appToken != "")
-        {
-            $http.get("/api/currentUser/"+Data.appToken).success(function (response)
-            {
-                $scope.participant = response;
-                console.log("User from token : " + response);
-                if($scope.participant == ""){
-                    Data.appToken = "";
-                    localStorage.setItem("AppToken", "");
-                    $location.path("/login");
-                }
-                else{
-                    console.log(" Token : " + Data.appToken + ", User : " + $scope.participant);
-                    loadParticipants();
-                    $scope.loadAssignments();
-                    $scope.showMyAssignments();                    
-                }
-            });
-        }
-        else
-        {
-            $location.path("/login");
-        }
+
+    if(Data.appToken == ""){
+        console.log("AppToken is not set ");
+        $location.path("/login");
+        return;
     }
-    getUserFromToken();
+    
+    $scope.participant = Data.participant;
+
     function loadParticipants(){
         $http.get("/api/participants").success(function (response)
         {
             $scope.participants= response;
+            $scope.loadAssignments();
+            $scope.showMyAssignments();   
             console.log(response);
         });
-    }
-
+    };
+    loadParticipants();
+    
     $scope.setGlobalAssignments = function(assignments){
         $scope.globalAssignments = assignments;
         assignments.some(function(userAss)

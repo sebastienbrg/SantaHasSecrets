@@ -5,10 +5,7 @@ scotchApp.controller('loginController',['$scope', '$http', 'Data', '$location', 
     var participant = undefined;
     var requestPwd = false;
     
-    if(Data.appToken != ""){
-    	console.log("AppToken is set to " + Data.appToken)
-        $location.path("/santa");
-    }
+
     console.log("appToken : " + Data.appToken)
     var typedPwd = "";
     var reTypedPwd = "";
@@ -23,6 +20,7 @@ scotchApp.controller('loginController',['$scope', '$http', 'Data', '$location', 
 
     $scope.selectedParticipant = function(participant)
     {
+        Data.participant = participant;
         $scope.participant = participant;
     	$http.get("/api/participantHasPw/" + participant).success(function (response)
 	    {

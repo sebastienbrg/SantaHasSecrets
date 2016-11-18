@@ -9,6 +9,9 @@
       <li class="nav-item" id="AssListNav" >
         <a class="nav-link" ng-click="showOthersAssignments()" href="">Les autres</a>
       </li>
+      <li class="nav-item" id="Messages" >
+        <a class="nav-link" ng-click="showMessages()" href="">Messages</a>
+      </li>
       <li>
         <a class="nav-link" ng-click="disconnect()" href="">Déconnexion</a>
     </li>
@@ -44,5 +47,31 @@
       </div>
     </div>
     </div>
+  </div>
+  <div id="MessagesDiv">
+    <div class="col-md-12">
+      <h2> Conversation avec celui qui a le gros cadeau de {{getMonPetitCadeau()}}</h2>
+      <div class="row" ng-repeat="message in messages.monPetitCadeau">
+        <div class="col-md-4" ng-show="{{message.from == 'Moi'}}"></div>        
+        <div class="col-md-8 jumbotron" ><h4>{{ message.from }}:</h4><p> {{message.content}}</p></div>
+      </div>
+      <div class="col-md-12">
+      <textarea placeholder="Mon message (qui doit être anonyme !)"  id="messageContentPetit" class="col-md-12"></textarea>
+      <button class="btn btn-primary col-md-4" ng-click="sendMessageMonPetitCadeau()"> Envoyer le message </button>
+      </div>
+    </div>
+
+    <div class="col-md-12">
+      <h2> Conversation avec celui qui a le petit cadeau de {{getMonGrosCadeau()}}</h2>
+      <div class="row" ng-repeat="message in messages.monGrosCadeau">
+        <div class="col-md-4" ng-show="{{message.from == 'Moi'}}"></div>        
+        <div class="col-md-8 jumbotron" ><h4>{{ message.from }}:</h4><p> {{message.content}}</p></div>
+      </div>
+      <div class="col-md-12" >
+      <textarea placeholder="Mon message (qui doit être anonyme !)" id="messageContentGros" class="col-md-12"></textarea>
+      <button class="btn btn-primary col-md-4" ng-click="sendMessageMonGrosCadeau()"> Envoyer le message </button>
+      </div>
+    </div>
+    
   </div>
 </div>

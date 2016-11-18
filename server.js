@@ -43,7 +43,21 @@ function loadParticipants(){
 		participants.sort();
 	});
 }
+var allMessages = [];
+function loadMessages(){
+	var file = './saves/messages.json'
+ 
+	jsonfile.readFile(file, function(err, readData) {
+		if(err)
+		{
+			console.log("Erreur : " + err);
+			return;
+		}
+  		allMessages = readData;
+	});
+}
 loadParticipants();
+loadMessages();
 
 var tokens = [];
 var passWords = {};
@@ -96,7 +110,7 @@ var loadAssignments = function()
 	});
 };
 var assignments = {};
-
+var finalAssignment = {};
 
 var setAssignmentsStatus = function()
 {
@@ -136,6 +150,8 @@ var setAssignmentsStatus = function()
 			participants.forEach(function(parti)
 			{
 				assignments[parti][round].state = "FINAL";
+				finalAssignment[parti] = { "petitCadeau" : assignments[parti][round].petitCadeau,
+											"grosCadeau" : assignments[parti][round].grosCadeau};
 				console.log("found a final round " + round);
 				finalRound = round;
 			});
@@ -339,15 +355,156 @@ app.get('/api/assignment/:token', function(req, res)
 	}	
 });
 
+function getUsersFinalGifts(username)
+{
+	var userIOfferSmall = "";
+	var userIOfferBig = "";
+	if(assignments[username] !== undefined)
+	{
+		assignments[username].forEach(function(round){
+			if(round.state == "FINAL")
+			{
+				userIOfferSmall = round.petitCadeau;
+				userIOfferBig = round.grosCadeau;
+			}
+		});
+	}	
+	return { "petitCadeau" : userIOfferSmall,
+				"grosCadeau" : userIOfferBig};
+}
+
+
+
+function getMessages(username)
+{
+
+	var myFinalGifties = finalAssignment[username];
+	console.log("Presents to :  ",myFinalGifties);
+	var msgFinal = {"monPetitCadeau" : [], "monGrosCadeau" : []};
+	if(myFinalGifties !== undefined)
+	{
+		var userThatHasMySmallPresentsBig ="";
+		var userThatHasMyBigPresentsSmall ="";
+		participants.forEach(function(participantName)
+		{
+			var ass = finalAssignment[participantName];
+			if(ass.petitCadeau == myFinalGifties.grosCadeau)
+			{
+				userThatHasMySmallPresentsBig = participantName
+			}
+			if(ass.grosCadeau == myFinalGifties.petitCadeau)
+			{
+				userThatHasMyBigPresentsSmall = participantName;
+			}
+		});
+		console.log("userThatHasMySmallPresentsBig", userThatHasMySmallPresentsBig);
+		console.log("userThatHasMyBigPresentsSmall", userThatHasMyBigPresentsSmall);
+
+		if(userThatHasMyBigPresentsSmall !== "" && userThatHasMySmallPresentsBig !== "")
+		{
+			console.log("All message", allMessages);
+			var filtered = allMessages.filter(function(msg){
+				return (msg.from == username || msg.to == username);
+			});
+			console.log("filtered", filtered);
+			var anonymousMessages = filtered.map(function(msg){
+				var anMsg = {};
+				anMsg.content = msg.content;
+				if(msg.from == username)
+				{
+					anMsg.from = "Moi";
+					anMsg.myPetitCadeau =  (msg.to == userThatHasMySmallPresentsBig);
+				}
+				else {
+					anMsg.from = "Other";
+					anMsg.myPetitCadeau = (msg.from == userThatHasMySmallPresentsBig);
+				}
+				return anMsg;
+			});
+			console.log("anonymousMessages",anonymousMessages);
+			anonymousMessages.forEach(function(msg){
+				if(msg.myPetitCadeau)
+				{
+					msg.myPetitCadeau = undefined;
+					msgFinal.monPetitCadeau.push(msg)
+				}
+				else
+				{
+					msg.myPetitCadeau = undefined;
+					msgFinal.monGrosCadeau.push(msg)	
+				}
+			});
+			console.log("anonymousMessages", anonymousMessages);
+		}
+	}
+	return msgFinal;
+}
+
+app.get('/api/messages/:token', function(req, res)
+{	
+	var user = tokens[req.params.token];
+	if(user)
+	{
+		console.log("Loading messages for user " + user);
+		res.json(getMessages(user));	
+	}
+	else
+	{
+		console.log('Returning  no assignment');
+	}	
+});
+
+
+
 app.get('/api/assignments/:token', function(req, res)
 {
 	var user = tokens[req.params.token];
 	res.json(getGlobalAssignments(user));
 });
 
+var saveMessages = function()
+{
+	var file = './saves/messages.json';
+
+	jsonfile.writeFile(file, allMessages, function (err) {
+		if(err)
+  			console.error(err)
+  		else
+  			console.log("Saved the messages!");
+	});
+};
+
 app.get('/api/participantHasPw/:user', function(req, res)
 {
 	res.json((passWords[req.params.user] != undefined) ? 1 : 0);
+});
+app.post("/api/newMessage/:token", function(req, res)
+{
+	var user = tokens[req.params.token];
+
+	var myFinalGifties = finalAssignment[user];
+	var userToBeGifted = myFinalGifties.grosCadeau;
+	var msg  = {"from" : user, "content" : req.body.msg.content};
+	var toMyPetitCadeau = (req.body.msg.to == "myPetitCadeau");
+	if(toMyPetitCadeau)
+	{
+		userToBeGifted = myFinalGifties.petitCadeau;
+	}
+
+	participants.forEach(function(participantName)
+	{
+		var ass = finalAssignment[participantName];
+		if((toMyPetitCadeau && ass.grosCadeau == userToBeGifted)
+			|| ( !toMyPetitCadeau && ass.petitCadeau == userToBeGifted))
+		{
+			msg.to = participantName;
+		}
+	});
+	
+	allMessages.push(msg);
+	saveMessages();
+	console.log("Recieved a message ", msg)
+	res.send("OK");
 });
 
 app.post("/api/createPassword/:user/:pwd/:activationKey", function(req, res)

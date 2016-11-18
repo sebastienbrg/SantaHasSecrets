@@ -53,7 +53,8 @@ scotchApp.controller('santaController',['$scope', '$http', 'Data', '$location', 
 
         $http.get("/api/assignments/" + Data.appToken).success(function(response)
         {
-            $scope.setGlobalAssignments(response);            
+            $scope.setGlobalAssignments(response);  
+            $scope.loadMessages();          
         });
     }; 
 
@@ -79,14 +80,76 @@ scotchApp.controller('santaController',['$scope', '$http', 'Data', '$location', 
     $scope.showMyAssignments = function(){
         $("#myAssNav").addClass("active");
         $("#AssListNav").removeClass("active");
+        $("#Messages").removeClass("active");
         $("#myAssignments").show();
         $("#otherAssignments").hide();
+        $("#MessagesDiv").hide();
     };
     $scope.showOthersAssignments = function(){
         $("#myAssNav").removeClass("active");
         $("#AssListNav").addClass("active");
+        $("#Messages").removeClass("active");
         $("#myAssignments").hide();
         $("#otherAssignments").show();
+        $("#MessagesDiv").hide();
     };
+    $scope.showMessages = function(){
+        $("#myAssNav").removeClass("active");
+        $("#AssListNav").removeClass("active");
+        $("#Messages").addClass("active");
+        $("#myAssignments").hide();
+        $("#otherAssignments").hide();
+        $("#MessagesDiv").show();
+    };
+
+    $scope.sendMessageMonPetitCadeau = function()
+    {
+        var msgContent = $("#messageContentPetit").val();   
+        var msg = { "from" : "Moi", "content" : msgContent, "to" : "myPetitCadeau"};
+        $scope.sendMessage(msg);    
+        $scope.messages.monPetitCadeau.push(msg);
+        $("#messageContentPetit").val("");
+    }
+    $scope.sendMessageMonGrosCadeau = function()
+    {
+        var msgContent = $("#messageContentGros").val();   
+        var msg = { "from" : "Moi", "content" : msgContent, "to" : "myGrosCadeau"};
+        $scope.sendMessage(msg);    
+        $scope.messages.monGrosCadeau.push(msg);
+        $("#messageContentGros").val("");
+    }
+    $scope.sendMessage = function(msg)
+    {
+        
+        $http.post("/api/newMessage/" + Data.appToken,{ "msg" : msg});
+    }
+
+    $scope.getMonPetitCadeau = function()
+    {
+        if($scope.userAssignements == undefined)
+            return "";
+        return $scope.userAssignements.assignments[$scope.userAssignements.assignments.length -1].petitCadeau;
+        
+    }
+    $scope.getMonGrosCadeau = function()
+    {
+        if($scope.userAssignements == undefined)
+            return "";
+        return $scope.userAssignements.assignments[$scope.userAssignements.assignments.length -1].grosCadeau;
+        
+    }
+
+    $scope.loadMessages = function()
+    {
+        console.log("Loading messages");
+
+        $http.get("/api/messages/" + Data.appToken).success(function(response)
+        {
+            console.log("Messages : " , response);
+            $scope.messages = response;            
+        });
+    }; 
+
+    //$scope.messages = { "monPetitCadeau" : [ { "content" : "message 1", "from" : "Moi"}, { "content" : "message 2", "from" : "Other"}] };
 
 }]);
